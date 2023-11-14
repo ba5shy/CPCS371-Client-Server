@@ -57,6 +57,10 @@ public class Client {
             }
             userInput.close();
         }
+        catch(UnknownHostException e){
+            System.err.println(e);
+            System.err.println("Port number provided is Incorrect");
+        }
         catch(IOException e){
             e.printStackTrace();
         }
