@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args){
-        Socket clientSocket = null;
+        Socket socket = null;
         InputStreamReader input = null; // receive data from server
         OutputStreamWriter output = null; // send data to server
 
@@ -14,10 +14,10 @@ public class Client {
         BufferedWriter bufferedWriter = null;
 
         // create socket
-        try{
-            clientSocket = new Socket("localhost", 9000); // used to connect to the server
-            input = new InputStreamReader(clientSocket.getInputStream());
-            output = new OutputStreamWriter(clientSocket.getOutputStream());
+        try {
+            socket = new Socket("localhost", 9000); // used to connect to the server
+            input = new InputStreamReader(socket.getInputStream());
+            output = new OutputStreamWriter(socket.getOutputStream());
 
             bufferedReader = new BufferedReader(input);
             bufferedWriter = new BufferedWriter(output);
@@ -38,9 +38,9 @@ public class Client {
 
                 // send messages to server
 
-                bufferedWriter.write(string);  
+                bufferedWriter.write(string); // send string first
                 bufferedWriter.newLine(); // send new line character
-                bufferedWriter.write(character);  
+                bufferedWriter.write(character); // then send character
                 bufferedWriter.newLine(); // send new line character
                 bufferedWriter.flush(); // flush stream 
 
@@ -61,13 +61,18 @@ public class Client {
             System.err.println(e);
             System.err.println("Port number provided is Incorrect");
         }
+        catch(ConnectException e){
+            System.err.println(e);
+            System.err.println("Server is not running");
+        }
         catch(IOException e){
             e.printStackTrace();
         }
+    
         finally{
             try{
-                if(clientSocket != null)
-                    clientSocket.close();
+                if(socket != null)
+                    socket.close();
                 if(input != null)
                     input.close();
                 if(output != null)
