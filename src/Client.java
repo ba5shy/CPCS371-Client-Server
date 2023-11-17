@@ -12,23 +12,64 @@ public class Client {
     static BufferedReader bufferedReader;
     static BufferedWriter bufferedWriter;
 
+     // getting the searched char from the user
+    public static String searchedchar(Scanner userInput){
+        String ch = "";
+       // ensuring that the user will input a valid string 
+        do{
+        // get user input
+        // if user enters a string, only first character will be used
+        System.out.print("Enter a Character to be searched: "); 
+   
+        ch = userInput.nextLine().toLowerCase();
+        if (ch == null || ch.isEmpty() || ch == "")
+            System.out.println("please enter some value! ");
+     
+        if(ch.length() > 1)
+            System.out.println("you have entered multiable characters! Only the first one will be considered");
+            
+        ch = ch;
+        } while(ch.length() == 0);
+        
+        return ch;
+    }
+
+
+       // getting the searched String from the user
+    public static StringBuffer searchedString(Scanner userInput){
+        
+        StringBuffer string = new StringBuffer("");
+        // ensuring that the user will input a valid string 
+      
+        do{
+        // get user input
+        System.out.println("Enter string: ");
+        
+        string = new StringBuffer(userInput.nextLine().toLowerCase());            
+        
+        }while (string.length() <= 0);
+        
+        return string;
+    }
+
+    
     public static void main(String[] args) throws IOException {
 
         // create socket
         createSocket();
-        Scanner userInput = new Scanner(System.in); // user input
+        
+        // user input
+         Scanner userInput = new Scanner(System.in);
 
         while (true) {
 
-            // get user input
-            // if user enters a string, only first character will be used
-            System.out.println("Enter a Character to be searched: "); 
-            char character = userInput.nextLine().charAt(0);
-            System.out.println("Enter string: ");
-            String string = userInput.nextLine();
-
             // send messages to server
-            sendUserInput(string, character);
+            sendUserInput(searchedchar(userInput).charAt(0),searchedString(userInput));
+
+            // server reply
+
+            String serverReply = bufferedReader.readLine();
+            System.out.println("Server: " + serverReply); // print server reply
 
             // server reply
 
@@ -36,13 +77,13 @@ public class Client {
             System.out.println("Server: " + serverReply); // print server reply
 
             System.out.println("Would you like to repeat? (y/n)");
-            char userChoice = userInput.nextLine().charAt(0);
+            char userChoice = userInput.nextLine().toLowerCase().charAt(0);
 
             while (true) {
                 if (userChoice == 'y' || userChoice == 'n')
                     break;
                 System.out.println("Incorrect input (y/n)");
-                userChoice = userInput.nextLine().charAt(0);
+                userChoice = userInput.nextLine().toLowerCase().charAt(0);
             }
 
             // send user choice to server
@@ -79,9 +120,9 @@ public class Client {
         
     }
 
-    private static void sendUserInput(String string, char character) throws IOException {
+    private static void sendUserInput(char character , StringBuffer string) throws IOException {
         try {
-            bufferedWriter.write(string); // send string first
+            bufferedWriter.write(string.toString()); // send string first
             bufferedWriter.newLine(); // send new line character
             bufferedWriter.write(character); // then send character
             bufferedWriter.newLine(); // send new line character
