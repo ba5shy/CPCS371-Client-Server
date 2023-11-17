@@ -70,11 +70,6 @@ public class Client {
             String serverReply = bufferedReader.readLine();
             System.out.println("Server: " + serverReply); // print server reply
 
-            // server reply
-
-            String serverReply = bufferedReader.readLine();
-            System.out.println("Server: " + serverReply); // print server reply
-
             System.out.println("Would you like to repeat? (y/n)");
             char userChoice = userInput.nextLine().toLowerCase().charAt(0);
 
