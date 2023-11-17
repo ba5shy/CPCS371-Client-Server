@@ -33,8 +33,7 @@ public class Client {
         
         return ch;
     }
-
-
+    
        // getting the searched String from the user
     public static StringBuffer searchedString(Scanner userInput){
         
@@ -46,13 +45,12 @@ public class Client {
         System.out.println("Enter string: ");
         
         string = new StringBuffer(userInput.nextLine().toLowerCase());            
-        
+        if(string.length() <= 0)
+                System.out.print("You haven't entered anything!! ");   
         }while (string.length() <= 0);
         
         return string;
     }
-
-    
     public static void main(String[] args) throws IOException {
 
         // create socket
@@ -82,7 +80,7 @@ public class Client {
             while (true) {
                 if (userChoice == 'y' || userChoice == 'n')
                     break;
-                System.out.println("Incorrect input (y/n)");
+                System.out.println("Incorrect input!\n  Would you like to repeat? (Y/N)");
                 userChoice = userInput.nextLine().toLowerCase().charAt(0);
             }
 
@@ -97,7 +95,7 @@ public class Client {
 
         }
         userInput.close(); // close Scanner
-
+System.out.println("Thank You!");
     }
 
     private static void createSocket() {
