@@ -51,6 +51,7 @@ public class Client {
         
         return string;
     }
+    
     public static void main(String[] args) throws IOException {
 
         // create socket
