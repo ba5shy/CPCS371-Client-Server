@@ -23,10 +23,10 @@ public class Client {
    
         ch = userInput.nextLine().toLowerCase();
         if (ch == null || ch.isEmpty() || ch == "")
-            System.out.println("please enter some value! ");
+            System.out.println("Please enter a value!");
      
         if(ch.length() > 1)
-            System.out.println("you have entered multiable characters! Only the first one will be considered");
+            System.out.println("You have entered multiple characters. Only the first one will be considered");
             
         ch = ch;
         } while(ch.length() == 0);
@@ -46,7 +46,7 @@ public class Client {
         
         string = new StringBuffer(userInput.nextLine().toLowerCase());            
         if(string.length() <= 0)
-                System.out.print("You haven't entered anything!! ");   
+                System.out.print("Please enter a value!");   
         }while (string.length() <= 0);
         
         return string;
