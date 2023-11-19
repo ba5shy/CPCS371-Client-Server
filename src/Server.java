@@ -54,7 +54,7 @@ public class Server {
 
     private static void initServer(ServerSocket serverSocket) {
         try {
-            System.out.println("Server is Up and Running");
+            System.out.println("Server is Up and Listening on port 9000");
             socket = serverSocket.accept();
             System.out.println("Client Connected!");
             input = new InputStreamReader(socket.getInputStream());
