@@ -41,6 +41,9 @@ public class Server {
                 } catch (SocketException e) {
                     System.err.println("Connection to Client Lost");
                     System.exit(0);
+                } catch (NullPointerException e) {
+                    System.err.println("Connection to Client Lost");
+                    System.exit(0);
                 }
 
             }
