@@ -12,63 +12,30 @@ public class Client {
     static BufferedReader bufferedReader;
     static BufferedWriter bufferedWriter;
 
-     // getting the searched char from the user
-    public static String searchedchar(Scanner userInput){
-        String ch = "";
-       // ensuring that the user will input a valid string 
-        do{
-        // get user input
-        // if user enters a string, only first character will be used
-        System.out.print("Enter a Character to be searched: "); 
-   
-        ch = userInput.nextLine().toLowerCase();
-        if (ch == null || ch.isEmpty() || ch == "")
-            System.out.println("Please enter a value!");
-     
-        if(ch.length() > 1)
-            System.out.println("You have entered multiple characters. Only the first one will be considered");
-            
-        ch = ch;
-        } while(ch.length() == 0);
-        
-        return ch;
-    }
-    
-       // getting the searched String from the user
-    public static StringBuffer searchedString(Scanner userInput){
-        
-        StringBuffer string = new StringBuffer("");
-        // ensuring that the user will input a valid string 
-      
-        do{
-        // get user input
-        System.out.println("Enter string: ");
-        
-        string = new StringBuffer(userInput.nextLine().toLowerCase());            
-        if(string.length() <= 0)
-                System.out.print("Please enter a value!");   
-        }while (string.length() <= 0);
-        
-        return string;
-    }
-    
     public static void main(String[] args) throws IOException {
 
         // create socket
         createSocket();
-        
+
         // user input
-         Scanner userInput = new Scanner(System.in);
+        Scanner userInput = new Scanner(System.in);
 
         while (true) {
 
             // send messages to server
-            sendUserInput(searchedchar(userInput).charAt(0),searchedString(userInput));
+            char userChar = searchedchar(userInput);
+            String userString = searchedString(userInput);
+            sendUserInput(userChar, userString);
 
             // server reply
-
-            String serverReply = bufferedReader.readLine();
-            System.out.println("Server: " + serverReply); // print server reply
+            try {
+                String serverReply = bufferedReader.readLine();
+                System.out.println("Server: " + serverReply); // print server reply
+            } catch (SocketException e) { // in case the server is no longer running after client already connected
+                System.err.println(e);
+                System.err.println("Lost Connection to Server");
+                System.exit(0);
+            }
 
             System.out.println("Would you like to repeat? (y/n)");
             char userChoice = userInput.nextLine().toLowerCase().charAt(0);
@@ -91,7 +58,46 @@ public class Client {
 
         }
         userInput.close(); // close Scanner
-System.out.println("Thank You!");
+        System.out.println("Thank You!");
+    }
+
+    // getting the searched char from the user
+    public static char searchedchar(Scanner userInput) {
+        String ch = "";
+        // ensuring that the user will input a valid string
+        do {
+            // get user input
+            // if user enters a string, only first character will be used
+            System.out.print("Enter a Character to be searched: ");
+
+            ch = userInput.nextLine().toLowerCase();
+            if (ch == null || ch.isEmpty() || ch == "")
+                System.out.println("Please enter a value!");
+
+            if (ch.length() > 1)
+                System.out.println("You have entered multiple characters. Only the first one will be considered");
+
+        } while (ch.length() == 0);
+
+        return ch.charAt(0);
+    }
+
+    // getting the searched String from the user
+    public static String searchedString(Scanner userInput) {
+
+        String string = "";
+        // ensuring that the user will input a valid string
+
+        do {
+            // get user input
+            System.out.print("Enter string: ");
+
+            string = userInput.nextLine().toLowerCase();
+            if (string.length() <= 0)
+                System.out.print("Please enter a value!");
+        } while (string.length() <= 0);
+
+        return string;
     }
 
     private static void createSocket() {
@@ -111,10 +117,10 @@ System.out.println("Thank You!");
         } catch (IOException e) {
             System.err.println(e);
         }
-        
+
     }
 
-    private static void sendUserInput(char character , StringBuffer string) throws IOException {
+    private static void sendUserInput(char character, String string) {
         try {
             bufferedWriter.write(string.toString()); // send string first
             bufferedWriter.newLine(); // send new line character
@@ -122,8 +128,11 @@ System.out.println("Thank You!");
             bufferedWriter.newLine(); // send new line character
             bufferedWriter.flush(); // flush stream
         } catch (SocketException e) {
+            System.err.println(e);
             System.err.println("Connection to Server Lost");
             System.exit(0);
+        } catch (IOException e) {
+            System.err.println(e);
         }
 
     }
