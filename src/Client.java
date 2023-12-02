@@ -23,7 +23,7 @@ public class Client {
         while (true) {
 
             // send messages to server
-            char userChar = searchedchar(userInput);
+            char userChar = searchedChar(userInput);
             String userString = searchedString(userInput);
             sendUserInput(userChar, userString);
 
@@ -62,7 +62,7 @@ public class Client {
     }
 
     // getting the searched char from the user
-    public static char searchedchar(Scanner userInput) {
+    public static char searchedChar(Scanner userInput) {
         String ch = "";
         // ensuring that the user will input a valid string
         do {
